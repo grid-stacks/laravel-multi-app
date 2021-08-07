@@ -4,8 +4,9 @@ namespace Modules\Blog\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Blog\Entities\Post;
 
-class BlogDatabaseSeeder extends Seeder
+class PostsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,6 +17,6 @@ class BlogDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $this->call(PostsTableSeeder::class);
+        Post::factory(5)->create();
     }
 }
