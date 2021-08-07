@@ -14,6 +14,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/blog', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/blog', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::prefix('v1/blog')->group(function() {
+    Route::middleware('auth:api')->group(function() {
+        Route::get('/auth', function (Request $request) {
+            return $request;
+        });
+    });
+
+    Route::middleware('guest')->group(function() {
+        Route::get('/guest', function (Request $request) {
+            return $request;
+        });
+    });
 });
