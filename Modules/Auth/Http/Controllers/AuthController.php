@@ -49,6 +49,23 @@ class AuthController extends Controller
         return $tokendata;
     }
 
+    public function issueRefreshToken(Request $request)
+    {
+        $client = Client::where('password_client', 1)->first();
+        $request->request->add([
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $request->refresh_token,
+            'client_id' => $client->id,
+            'client_secret' => $client->secret,
+            'scope' => null
+        ]);
+
+        $proxy = Request::create('oauth/token', 'POST');
+        $tokens = Route::dispatch($proxy);
+
+        return $tokens;
+    }
+
     public function register(Request $request)
     {
         $data = $request->validate([
