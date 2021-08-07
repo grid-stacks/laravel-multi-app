@@ -19,15 +19,16 @@ use Modules\Auth\Http\Controllers\AuthController;
 //     return $request->user();
 // });
 
-Route::prefix('v1/auth')->group(function() {
+Route::prefix('v1/auth')->group(function () {
     // Route::middleware('auth:api')->group(function() {
     //     Route::get('/auth', function (Request $request) {
     //         return $request;
     //     });
     // });
 
-    Route::middleware('guest')->group(function() {
+    Route::middleware('guest')->group(function () {
         Route::post('/login', [AuthController::class, 'login']);
+        Route::post('/login-with-oauth', [AuthController::class, 'loginWithOAuth']);
         Route::post('/register', [AuthController::class, 'register']);
     });
 });

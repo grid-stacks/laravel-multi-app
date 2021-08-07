@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Route;
+use Laravel\Passport\Client;
 
 class AuthController extends Controller
 {
@@ -26,6 +28,27 @@ class AuthController extends Controller
         return response(['user' => auth()->user(), 'token' => $token]);
     }
 
+    public function loginWithOAuth(Request $request)
+    {
+        $client = Client::where('password_client', 1)->first();
+        $request->request->add([
+            'grant_type' => 'password',
+            'client_id' => $client->id,
+            'client_secret' => $client->secret,
+            'scope' => null,
+            'username' => $request->email,
+            'password' => $request->password,
+        ]);
+
+        $proxy = Request::create('oauth/token', 'POST');
+        $tokens = Route::dispatch($proxy);
+
+        $tokrnresponse = (array) $tokens->getContent();
+        $tokendata = json_decode($tokrnresponse[0]);
+
+        return $tokendata;
+    }
+
     public function register(Request $request)
     {
         $data = $request->validate([
@@ -40,7 +63,7 @@ class AuthController extends Controller
 
         $token = $user->createToken('API Token')->accessToken;
 
-        return response([ 'user' => $user, 'token' => $token]);
+        return response(['user' => $user, 'token' => $token]);
     }
 
     /**
