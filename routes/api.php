@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Lcobucci\JWT\Configuration;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['auth:api', 'claim:type,admin'])->get('/user', function (Request $request) {
+    $token = $request->bearerToken();
+    $jwt = Configuration::forUnsecuredSigner()->parser()->parse($token);
+    $type = $jwt->claims()->get('type');
+
+    return [
+        'user' => $request->user(),
+        'type' => $type
+    ];
 });
