@@ -1,4 +1,5 @@
 {
     "Blog": true,
-    "Product": true
+    "Product": true,
+    "Auth": true
 }
