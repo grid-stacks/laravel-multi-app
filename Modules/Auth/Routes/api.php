@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Modules\Auth\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,19 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/auth', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/auth', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::prefix('v1/auth')->group(function() {
+    // Route::middleware('auth:api')->group(function() {
+    //     Route::get('/auth', function (Request $request) {
+    //         return $request;
+    //     });
+    // });
+
+    Route::middleware('guest')->group(function() {
+        Route::post('/login', [AuthController::class, 'login']);
+        Route::post('/register', [AuthController::class, 'register']);
+    });
 });
