@@ -46,6 +46,9 @@ class AuthController extends Controller
         $tokrnresponse = (array) $tokens->getContent();
         $tokendata = json_decode($tokrnresponse[0]);
 
+        $user = User::where('email', $request->email)->first();
+        $tokendata->user = $user;
+
         return $tokendata;
     }
 
@@ -62,6 +65,8 @@ class AuthController extends Controller
 
         $proxy = Request::create('oauth/token', 'POST');
         $tokens = Route::dispatch($proxy);
+
+        $tokens->user = $request->user();
 
         return $tokens;
     }
