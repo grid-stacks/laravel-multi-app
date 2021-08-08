@@ -35,6 +35,7 @@ return [
                 */
                 'annotations' => [
                     base_path('app'),
+                    base_path('Modules'),
                 ],
 
             ],
@@ -247,8 +248,8 @@ return [
         /*
          * Uncomment to add constants which can be used in annotations
          */
-        // 'constants' => [
-        // 'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'),
-        // ],
+        'constants' => [
+            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'),
+        ],
     ],
 ];

@@ -15,13 +15,31 @@ use Lcobucci\JWT\Configuration;
 |
 */
 
-Route::middleware(['auth:api', 'claim:type,admin'])->get('/user', function (Request $request) {
-    $token = $request->bearerToken();
-    $jwt = Configuration::forUnsecuredSigner()->parser()->parse($token);
-    $type = $jwt->claims()->get('type');
+// Route::middleware(['auth:api', 'claim:type,admin'])->get('/user', function (Request $request) {
+//     $token = $request->bearerToken();
+//     $jwt = Configuration::forUnsecuredSigner()->parser()->parse($token);
+//     $type = $jwt->claims()->get('type');
 
-    return [
-        'user' => $request->user(),
-        'type' => $type
-    ];
+//     return [
+//         'user' => $request->user(),
+//         'type' => $type
+//     ];
+// });
+
+Route::group([
+    'prefix' => 'v1',
+    'as' => 'api.',
+    'namespace' => 'Api\V1\Admin',
+    'middleware' => ['auth:api', 'claim:type,admin']
+], function () {
+    Route::get('user', function (Request $request) {
+        $token = $request->bearerToken();
+        $jwt = Configuration::forUnsecuredSigner()->parser()->parse($token);
+        $type = $jwt->claims()->get('type');
+
+        return [
+            'user' => $request->user(),
+            'type' => $type
+        ];
+    });
 });
