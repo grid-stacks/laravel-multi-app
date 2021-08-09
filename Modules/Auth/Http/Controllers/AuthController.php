@@ -17,7 +17,7 @@ class AuthController extends Controller
      *   tags={"Auth"},
      *   summary="Login",
      *   operationId="login",
-     *
+     *   security={{"passport": {"*"}}},
      *   @OA\Parameter(
      *      name="email",
      *      in="query",
