@@ -18,14 +18,18 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::prefix('v1/blog')->group(function() {
-    Route::middleware('auth:api')->group(function() {
+Route::prefix('v1/blog')->group(function () {
+    Route::middleware('auth:api')->group(function () {
         Route::get('/auth', function (Request $request) {
             return $request;
         });
+
+        // How to route multi level
+        Route::resource('posts', BlogController::class);
+        Route::resource('posts.categories', BlogController::class)->only('index', 'show');
     });
 
-    Route::middleware('guest')->group(function() {
+    Route::middleware('guest')->group(function () {
         Route::get('/guest', function (Request $request) {
             return $request;
         });
