@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryMultiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\Auth\Http\Controllers\AuthController;
@@ -28,5 +29,8 @@ Route::prefix('v1/auth')->group(function () {
         Route::post('/login', [AuthController::class, 'login']);
         Route::post('/login-with-oauth', [AuthController::class, 'loginWithOAuth']);
         Route::post('/register', [AuthController::class, 'register']);
+        Route::post('/create-category', [CategoryMultiController::class, 'store']);
+        Route::get('/categories', [CategoryMultiController::class, 'index']);
+        Route::get('/categories/{id}', [CategoryMultiController::class, 'show']);
     });
 });
